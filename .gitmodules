@@ -1,0 +1,12 @@
+[submodule "XenosEngine/vendor/glfw"]
+	path = XenosEngine/vendor/glfw
+	url = https://github.com/TheCherno/glfw
+[submodule "XenosEngine/vendor/imgui"]
+	path = XenosEngine/vendor/imgui
+	url = https://github.com/TheCherno/imgui
+[submodule "XenosEngine/vendor/glm"]
+	path = XenosEngine/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "XenosEngine/vendor/yaml-cpp"]
+	path = XenosEngine/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp

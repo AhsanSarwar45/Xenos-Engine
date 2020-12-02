@@ -1,0 +1,2 @@
+D:\Dev\Xenos\XenosEngine\vendor\glad\bin\Debug-windows-x86_64\Glad\Glad.pdb
+D:\Dev\Xenos\XenosEngine\vendor\glad\bin-int\Debug-windows-x86_64\Glad\Glad.pdb

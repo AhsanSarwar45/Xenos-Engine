@@ -1,0 +1,10 @@
+
+Conventions:
+
+Casing:
+
+Camel Case
+
+Inside Classes, public members come first, followed by protected and then private. This will allow
+the game developer to quickly look up all the public member fields and functions at his disposal 
+instead of the private implementation details.

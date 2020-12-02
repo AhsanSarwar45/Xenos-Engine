@@ -1,0 +1,21 @@
+Contexts:
+  - Context: File
+    Actions:
+      - Action: Save As Scene
+        Key: 83
+        Modifiers:
+          Shift: true
+          Ctrl: true
+          Alt: false
+      - Action: Open Scene
+        Key: 79
+        Modifiers:
+          Shift: false
+          Ctrl: true
+          Alt: false
+      - Action: New Scene
+        Key: 78
+        Modifiers:
+          Shift: false
+          Ctrl: true
+          Alt: false
