@@ -10,3 +10,6 @@
 [submodule "XenosEngine/vendor/yaml-cpp"]
 	path = XenosEngine/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp
+[submodule "XenosEngine/vendor/ImGuizmo"]
+	path = XenosEngine/vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo
