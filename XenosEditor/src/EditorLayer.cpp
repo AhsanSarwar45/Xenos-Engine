@@ -2,20 +2,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui/imgui.h>
+#include "imgui/imgui_toolbar.h"
+#include "ImGuizmo.h"
 #include <unordered_map>
 #include <chrono>
-#include "WindowPanels/KeyBindingsWindow.h"
 #include "Xenos/Utility/PlatformUtils.h"
 #include "Xenos/Scene/SceneSerializer.h"
 #include "Xenos/Utility/PreferenceSerializer.h"
-#include "Xenos/Input/InputMapping.h"
 #include "Xenos/Input/KeyCodes.h"
+#include "Panels/SpriteEditorWindow.h"
+#include "Xenos/Math/Math.h"
 
 
 namespace Xenos
 {
 	EditorLayer::EditorLayer()
-		:Layer("Sandbox 2D"), m_CameraController(1280.0f / 720.0f)
+		:Layer("Sandbox 2D")
 	{
 
 
@@ -26,7 +28,7 @@ namespace Xenos
 		XS_PROFILE_FUNCTION();
 		
 		//m_SpriteSheet = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 11 }, { 128, 128 }, { 1,2 });
-
+		m_SpriteSheet = Xenos::Texture2D::Create("assets/textures/spritesheet.png");
 		/*m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 		m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 		m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
@@ -35,7 +37,11 @@ namespace Xenos
 		m_Particle.VelocityVariation = { 3.0f, 1.0f };
 		m_Particle.Position = { 0.0f, 0.0f };*/
 
+		//InputSettings settings = { 2.3f };
+		//PreferenceSerializer::SerializeInputSettings(settings);
+
 		PreferenceSerializer::DeserializeInputMapping();
+		PreferenceSerializer::DeserializeInputSettings();
 
 		FrameBufferSpecification fbSpec;
 		fbSpec.Width = 1280;
@@ -44,12 +50,17 @@ namespace Xenos
 
 		m_ActiveScene = CreateRef <Scene>();
 
+		m_EditorCamera = CreateRef<EditorCamera>(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		m_PreferencesWindow = PreferencesPanel(m_EditorCamera);
+
 		Entity square = m_ActiveScene->CreateEntity();
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
 		m_CameraEntity.AddComponent<CameraComponent>();
 
+		m_SelectedEntity = CreateRef<Entity>();
 
 		class CameraController : public ScriptableEntity
 		{
@@ -83,9 +94,10 @@ namespace Xenos
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
 		
+
+		m_SceneHierarchyPanel = SceneHierarchyPanel(m_ActiveScene, m_SelectedEntity);		
+		m_InspectorPanel = InspectorPanel(m_SelectedEntity);		
 	}
 
 	void EditorLayer::OnDetach()
@@ -97,14 +109,15 @@ namespace Xenos
 	{
 		XS_PROFILE_FUNCTION();
 
-		if(m_ViewportFocused) m_CameraController.OnUpdate(timeStep);
+		if(m_ViewportHovered)
+			m_EditorCamera->OnUpdate(timeStep);
 
 		Renderer2D::ResetStats();
 		m_FrameBuffer->Bind();
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
 
-		m_ActiveScene->OnUpdate(timeStep);
+		m_ActiveScene->OnUpdateEditor(timeStep, *m_EditorCamera);
 
 		m_FrameBuffer->Unbind();
 	}
@@ -184,9 +197,9 @@ namespace Xenos
 			{
 				if (ImGui::BeginMenu("Add Entity"))
 				{
-					if (ImGui::MenuItem("Empty Entity")) ;
-					if (ImGui::MenuItem("Camera"));
-					if (ImGui::MenuItem("Sprite"));
+					if (ImGui::MenuItem("Empty Entity")) m_ActiveScene->CreateEntity();
+					if (ImGui::MenuItem("Camera"))m_ActiveScene->CreateCamera();;
+					if (ImGui::MenuItem("Sprite"))m_ActiveScene->CreateSprite();;
 					ImGui::EndMenu();
 				}
 
@@ -197,7 +210,6 @@ namespace Xenos
 			{
 				if (ImGui::MenuItem("Preferences"))
 				{
-					KeyBindingsWindow::Initialize();
 					m_PreferenceWindowOpened = true;
 				}
 
@@ -215,7 +227,10 @@ namespace Xenos
 			ImGui::EndMenuBar();
 		}
 
-		m_SceneHierarchyPanel.OnImGuiRender();
+
+
+		m_SceneHierarchyPanel.ShowPanel();
+		m_InspectorPanel.ShowPanel();
 
 		ImGui::Begin("Debug");
 		ImGui::Text("Renderer Stats");
@@ -226,46 +241,125 @@ namespace Xenos
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
-		ImGui::Begin("Viewport");
+
+		ImGui::Begin(ICON_FK_CAMERA" Viewport");
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer()->BlockEvent(!m_ViewportFocused || !m_ViewportHovered );
+		Application::Get().GetImGuiLayer()->BlockEvent(false);
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		if (m_ViewportSize != *((glm::vec2*) & viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
 		{			
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 			m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+			m_EditorCamera->SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 		
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1, 0 });
+
+		if (*m_SelectedEntity)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			const glm::mat4& cameraProjection = m_EditorCamera->GetProjection();
+			glm::mat4 cameraView = m_EditorCamera->GetViewMatrix();
+
+
+			auto& tc = m_SelectedEntity->GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f;
+
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE) snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION )m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, (snap) ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - tc.Rotation;
+				tc.Translation = translation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
+
 		ImGui::End();
+
 		ImGui::PopStyleVar();
 
 		ImGui::End();
 
 		if (m_PreferenceWindowOpened)
 		{
-			KeyBindingsWindow::ShowWindow();
+			m_PreferencesWindow.ShowPanel();
 		}
+
+	//	//ImGui::SetNextWindowPos(ImVec2(0.0f, io.DisplaySize.y), 0, ImVec2(0.0f, 1.0f));
+		ImGui::Begin("Info Bar");
+
+		ImGui::End();
+
+		//SpriteEditorWindow::ShowWindow(m_SpriteSheet);
 	}
 
 	void EditorLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
-
+		m_EditorCamera->OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(XS_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 	}
 
-	void EditorLayer::ApplyAction(const std::string& action)
+	void EditorLayer::ApplyAction(Action action)
 	{
-		if (action == "Save As Scene") SaveSceneAs();
-		else if (action == "Open Scene") OpenScene();
-		else if (action == "New Scene") NewScene();
+		switch (action)
+		{
+		case Xenos::Action::SaveAsScene:  SaveSceneAs();
+			break;
+		case Xenos::Action::OpenScene: OpenScene();
+			break;
+		case Xenos::Action::NewScene: NewScene();
+			break;
+		case Xenos::Action::Select: m_GizmoType = -1;
+			break;
+		case Xenos::Action::Translate: m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case Xenos::Action::Rotate:  m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case Xenos::Action::Scale: m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		default:
+			break;
+		}
+	}
+
+	void EditorLayer::CheckShorcut(const InputMapping& map, KeyCode key, bool alt, bool control, bool shift)
+	{
+
+		for (std::pair<Action, KeyAction> action : map.actionMap)
+		{
+			if (key == action.second.keyCode
+				&& alt == action.second.alt
+				&& control == action.second.ctrl
+				&& shift == action.second.shift
+				)
+			{
+				ApplyAction(action.first);
+			}
+		}
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -273,30 +367,31 @@ namespace Xenos
 		// Shortcuts
 		if (e.GetRepeatCount() > 0)
 			return false;
-
+	
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		bool alt = Input::IsKeyPressed(Key::LeftAlt) || Input::IsKeyPressed(Key::RightAlt);
 
-		if (e.GetKeyCode() == Key::N)
+		if ( m_PreferencesWindow.IsFocused() && m_PreferencesWindow.IsWaitingForInput()
+			&& e.GetKeyCode() != Key::LeftControl && e.GetKeyCode() != Key::RightControl
+			&& e.GetKeyCode() != Key::LeftShift && e.GetKeyCode() != Key::RightShift
+			&& e.GetKeyCode() != Key::LeftAlt && e.GetKeyCode() != Key::RightAlt
+			)
 		{
-			control = control;
+			m_PreferencesWindow.SetBind(e.GetKeyCode(), shift, alt, control);
+			return true;
 		}
 
-		m_CurrentMapping = PreferenceSerializer::ContextMap["File"];
+		CheckShorcut(PreferenceSerializer::s_ContextMap[Context::File], e.GetKeyCode(), alt, control, shift);
 
-		for (std::pair<std::string, KeyAction> action : m_CurrentMapping.actionMap)
+		if (m_ViewportHovered)
 		{
-			if (e.GetKeyCode() == action.second.first
-				&& alt == action.second.second[0]
-				&& control == action.second.second[1]
-				&& shift == action.second.second[2]
-				)
-			{
-				ApplyAction(action.first);
-			}
+			CheckShorcut(PreferenceSerializer::s_ContextMap[Context::Viewport], e.GetKeyCode(), alt, control, shift);
+			return true;
 		}
+	
 	}
+
 
 	
 	void EditorLayer::NewScene()

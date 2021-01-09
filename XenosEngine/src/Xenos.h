@@ -10,6 +10,7 @@
 #include "Xenos/Core/OrthographicCameraController.h"
 
 #include "Xenos/ImGUI/ImGuiLayer.h"
+#include "Xenos/ImGUI/FontAwesome.h"
 
 #include "Xenos/Input/Input.h"
 #include "Xenos/Input/KeyCodes.h"
@@ -28,6 +29,7 @@
 #include "Xenos/Renderer/Texture.h"
 #include "Xenos/Renderer/SubTexture.h"
 #include "Xenos/Renderer/Buffer.h"
+#include "Xenos/Renderer/EditorCamera.h"
 #include "Xenos/Renderer/FrameBuffer.h"
 #include "Xenos/Renderer/VertexArray.h"
 

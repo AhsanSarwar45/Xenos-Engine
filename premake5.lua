@@ -20,6 +20,7 @@ IncludeDir["entt"] = "XenosEngine/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "XenosEngine/vendor/yaml-cpp/include"
 IncludeDir["magic_enum"] = "XenosEngine/vendor/magic_enum"
 IncludeDir["ImGuizmo"] = "XenosEngine/vendor/ImGuizmo"
+IncludeDir["FontAwesome"] = "XenosEngine/vendor/font_awesome"
 
 include "XenosEngine/vendor/glfw"
 include "XenosEngine/vendor/glad"
@@ -65,7 +66,8 @@ project "XenosEngine"	--Settings applied to the project only
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.magic_enum}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.FontAwesome}"
 	}
 
 	links 
@@ -75,11 +77,11 @@ project "XenosEngine"	--Settings applied to the project only
 		"opengl32.lib",
 		"imgui",
 		"yaml-cpp"
+		
 	}
 
-	filter "files:vendor/ImGuizmo/**.cpp"
-	flags {"NoPCH"}
-
+	filter "files:XenosEngine/vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
 	filter "system:windows"			--Settings applied to windows only
 		systemversion "latest"		--Sets the system version to the latest installed
 		
@@ -186,14 +188,17 @@ project "XenosEditor"
 		"XenosEngine",		
 		"XenosEngine/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
-
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.FontAwesome}"
 	}
 
 	links
 	{
 		"XenosEngine"
 	}
+
+	
 
 	filter "system:windows"		--Settings applied to windows only
 		systemversion "latest"

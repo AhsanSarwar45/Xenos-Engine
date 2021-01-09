@@ -7,6 +7,8 @@
 #include <examples/imgui_impl_opengl3.h>
 
 #include "Xenos/Core/Application.h"
+#include "FontAwesome.h"
+#include "ImGuizmo.h"
 
 // TEMPORARY
 #include <GLFW/glfw3.h>
@@ -26,18 +28,21 @@ namespace Xenos {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;      
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;          
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;        
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto/Roboto-Regular.ttf", 16.0f);
-		io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto/Roboto-Light.ttf", 14.0f);
+	//	io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto/Roboto-Light.ttf", 14.0f);
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto/Roboto-Light.ttf", 16.0f);
 		
-
+		ImFontConfig config;
+		config.MergeMode = true;
+		static const ImWchar icon_ranges[] = { ICON_MIN_FK, ICON_MAX_FK, 0 };
+		io.Fonts->AddFontFromFileTTF("assets/fonts/fontawesome-webfont.ttf", 12.0f, &config, icon_ranges);
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
@@ -77,6 +82,7 @@ namespace Xenos {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()

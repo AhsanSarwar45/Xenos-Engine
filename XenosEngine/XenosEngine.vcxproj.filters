@@ -31,6 +31,9 @@
     <Filter Include="src\Xenos\Input">
       <UniqueIdentifier>{8862C4F8-F4ED-31BD-FDFE-B4B169098EBD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Xenos\Math">
+      <UniqueIdentifier>{426AF8B9-2E38-ECBF-17CC-5CE60339C824}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Xenos\Renderer">
       <UniqueIdentifier>{8FD5EB3B-7BB9-AC91-E419-A7E4D01C9713}</UniqueIdentifier>
     </Filter>
@@ -42,6 +45,9 @@
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -144,16 +150,25 @@
     <ClInclude Include="src\Xenos\Input\InputMapping.h">
       <Filter>src\Xenos\Input</Filter>
     </ClInclude>
+    <ClInclude Include="src\Xenos\Input\InputSettings.h">
+      <Filter>src\Xenos\Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Xenos\Input\KeyCodes.h">
       <Filter>src\Xenos\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Xenos\Input\MouseCodes.h">
       <Filter>src\Xenos\Input</Filter>
     </ClInclude>
+    <ClInclude Include="src\Xenos\Math\Math.h">
+      <Filter>src\Xenos\Math</Filter>
+    </ClInclude>
     <ClInclude Include="src\Xenos\Renderer\Buffer.h">
       <Filter>src\Xenos\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Xenos\Renderer\Camera.h">
+      <Filter>src\Xenos\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Xenos\Renderer\EditorCamera.h">
       <Filter>src\Xenos\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Xenos\Renderer\FrameBuffer.h">
@@ -204,9 +219,6 @@
     <ClInclude Include="src\Xenos\Scene\ScriptableEntity.h">
       <Filter>src\Xenos\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Xenos\Utility\EnumToString.h">
-      <Filter>src\Xenos\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\Xenos\Utility\PlatformUtils.h">
       <Filter>src\Xenos\Utility</Filter>
     </ClInclude>
@@ -215,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="src\xenospch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1496,10 +1511,22 @@
     <ClCompile Include="src\Xenos\ImGUI\ImGuiLayer.cpp">
       <Filter>src\Xenos\ImGUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Xenos\Input\InputMapping.cpp">
+      <Filter>src\Xenos\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Xenos\Input\KeyCodes.cpp">
+      <Filter>src\Xenos\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Xenos\Math\Math.cpp">
+      <Filter>src\Xenos\Math</Filter>
+    </ClCompile>
     <ClCompile Include="src\Xenos\Renderer\Buffer.cpp">
       <Filter>src\Xenos\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Xenos\Renderer\Camera.cpp">
+      <Filter>src\Xenos\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Xenos\Renderer\EditorCamera.cpp">
       <Filter>src\Xenos\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Xenos\Renderer\FrameBuffer.cpp">
@@ -1529,9 +1556,6 @@
     <ClCompile Include="src\Xenos\Renderer\VertexArray.cpp">
       <Filter>src\Xenos\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Xenos\Scene\Components.cpp">
-      <Filter>src\Xenos\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="src\Xenos\Scene\Entity.cpp">
       <Filter>src\Xenos\Scene</Filter>
     </ClCompile>
@@ -1544,20 +1568,17 @@
     <ClCompile Include="src\Xenos\Scene\SceneSerializer.cpp">
       <Filter>src\Xenos\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\Xenos\Utility\EnumToString.cpp">
-      <Filter>src\Xenos\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\Xenos\Utility\PreferenceSerializer.cpp">
       <Filter>src\Xenos\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\xenospch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Xenos\Input\KeyCodes.cpp">
-      <Filter>src\Xenos\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;..\XenosEngine\vendor\ImGuizmo;..\XenosEngine\vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;..\XenosEngine\vendor\ImGuizmo;..\XenosEngine\vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\XenosEngine\vendor\spdlog\include;..\XenosEngine\src;..\XenosEngine;..\XenosEngine\vendor;..\XenosEngine\vendor\glm;..\XenosEngine\vendor\entt\include;..\XenosEngine\vendor\ImGuizmo;..\XenosEngine\vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -131,15 +131,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Panels\InspectorPanel.h" />
+    <ClInclude Include="src\Panels\Panel.h" />
     <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\WindowPanels\KeyBindingsWindow.h" />
-    <ClInclude Include="src\WindowPanels\SceneHeiracrchyPanel.h" />
+    <ClInclude Include="src\Panels\MenuBar.h" />
+    <ClInclude Include="src\Panels\PreferencesPanel.h" />
+    <ClInclude Include="src\Panels\SceneHeiracrchyPanel.h" />
+    <ClInclude Include="src\Panels\SpriteEditorWindow.h" />
+    <ClInclude Include="src\UI Utilities\UIUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Panels\InspectorPanel.cpp" />
+    <ClCompile Include="src\Panels\Panel.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\WindowPanels\KeyBindingsWindow.cpp" />
-    <ClCompile Include="src\WindowPanels\SceneHeiracrchyPanel.cpp" />
+    <ClCompile Include="src\Panels\MenuBar.cpp" />
+    <ClCompile Include="src\Panels\PreferencesPanel.cpp" />
+    <ClCompile Include="src\Panels\SceneHeiracrchyPanel.cpp" />
+    <ClCompile Include="src\Panels\SpriteEditorWindow.cpp" />
     <ClCompile Include="src\XenosEditorApp.cpp" />
+    <ClCompile Include="src\UI Utilities\UIUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XenosEngine\XenosEngine.vcxproj">

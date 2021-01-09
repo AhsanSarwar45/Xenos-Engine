@@ -7,21 +7,39 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\WindowPanels\KeyBindingsWindow.h">
+    <ClInclude Include="src\Panels\MenuBar.h">
       <Filter>WindowPanels</Filter>
     </ClInclude>
-    <ClInclude Include="src\WindowPanels\SceneHeiracrchyPanel.h">
+    <ClInclude Include="src\Panels\SceneHeiracrchyPanel.h">
       <Filter>WindowPanels</Filter>
     </ClInclude>
+    <ClInclude Include="src\Panels\SpriteEditorWindow.h">
+      <Filter>WindowPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Panels\Panel.h" />
+    <ClInclude Include="src\Panels\PreferencesPanel.h">
+      <Filter>WindowPanels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Panels\InspectorPanel.h" />
+    <ClInclude Include="src\UI Utilities\UIUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\WindowPanels\KeyBindingsWindow.cpp">
-      <Filter>WindowPanels</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WindowPanels\SceneHeiracrchyPanel.cpp">
-      <Filter>WindowPanels</Filter>
-    </ClCompile>
     <ClCompile Include="src\XenosEditorApp.cpp" />
+    <ClCompile Include="src\Panels\MenuBar.cpp">
+      <Filter>WindowPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Panels\SceneHeiracrchyPanel.cpp">
+      <Filter>WindowPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Panels\SpriteEditorWindow.cpp">
+      <Filter>WindowPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Panels\Panel.cpp" />
+    <ClCompile Include="src\Panels\PreferencesPanel.cpp">
+      <Filter>WindowPanels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Panels\InspectorPanel.cpp" />
+    <ClCompile Include="src\UI Utilities\UIUtils.cpp" />
   </ItemGroup>
 </Project>

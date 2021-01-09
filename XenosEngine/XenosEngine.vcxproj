@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>xenospch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_BUILD_DLL;GLFW_INCLUDE_NONE;XENOS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;vendor\ImGuizmo;vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -97,7 +97,7 @@
       <PrecompiledHeaderFile>xenospch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_BUILD_DLL;GLFW_INCLUDE_NONE;XENOS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;vendor\ImGuizmo;vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeaderFile>xenospch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>XENOS_PLATFORM_WINDOWS;XENOS_BUILD_DLL;GLFW_INCLUDE_NONE;XENOS_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\magic_enum;vendor\ImGuizmo;vendor\font_awesome;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -166,10 +166,13 @@
     <ClInclude Include="src\Xenos\ImGUI\ImGuiLayer.h" />
     <ClInclude Include="src\Xenos\Input\Input.h" />
     <ClInclude Include="src\Xenos\Input\InputMapping.h" />
+    <ClInclude Include="src\Xenos\Input\InputSettings.h" />
     <ClInclude Include="src\Xenos\Input\KeyCodes.h" />
     <ClInclude Include="src\Xenos\Input\MouseCodes.h" />
+    <ClInclude Include="src\Xenos\Math\Math.h" />
     <ClInclude Include="src\Xenos\Renderer\Buffer.h" />
     <ClInclude Include="src\Xenos\Renderer\Camera.h" />
+    <ClInclude Include="src\Xenos\Renderer\EditorCamera.h" />
     <ClInclude Include="src\Xenos\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Xenos\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Xenos\Renderer\RenderCommand.h" />
@@ -186,10 +189,10 @@
     <ClInclude Include="src\Xenos\Scene\SceneCamera.h" />
     <ClInclude Include="src\Xenos\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Xenos\Scene\ScriptableEntity.h" />
-    <ClInclude Include="src\Xenos\Utility\EnumToString.h" />
     <ClInclude Include="src\Xenos\Utility\PlatformUtils.h" />
     <ClInclude Include="src\Xenos\Utility\PreferenceSerializer.h" />
     <ClInclude Include="src\xenospch.h" />
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -618,9 +621,12 @@
     <ClCompile Include="src\Xenos\Core\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Xenos\ImGUI\ImGUIBuild.cpp" />
     <ClCompile Include="src\Xenos\ImGUI\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Xenos\Input\InputMapping.cpp" />
     <ClCompile Include="src\Xenos\Input\KeyCodes.cpp" />
+    <ClCompile Include="src\Xenos\Math\Math.cpp" />
     <ClCompile Include="src\Xenos\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Xenos\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Xenos\Renderer\EditorCamera.cpp" />
     <ClCompile Include="src\Xenos\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Xenos\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Xenos\Renderer\Renderer.cpp" />
@@ -630,15 +636,16 @@
     <ClCompile Include="src\Xenos\Renderer\SubTexture.cpp" />
     <ClCompile Include="src\Xenos\Renderer\Texture.cpp" />
     <ClCompile Include="src\Xenos\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Xenos\Scene\Components.cpp" />
     <ClCompile Include="src\Xenos\Scene\Entity.cpp" />
     <ClCompile Include="src\Xenos\Scene\Scene.cpp" />
     <ClCompile Include="src\Xenos\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Xenos\Scene\SceneSerializer.cpp" />
-    <ClCompile Include="src\Xenos\Utility\EnumToString.cpp" />
     <ClCompile Include="src\Xenos\Utility\PreferenceSerializer.cpp" />
     <ClCompile Include="src\xenospch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>

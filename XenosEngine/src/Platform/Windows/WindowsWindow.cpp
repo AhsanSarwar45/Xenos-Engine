@@ -28,7 +28,7 @@ namespace Xenos {
 
 		
 
-		XS_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
+		//XS_CORE_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
 
 		//Initialize GLFW
 		if (!s_GLFWInitialized)

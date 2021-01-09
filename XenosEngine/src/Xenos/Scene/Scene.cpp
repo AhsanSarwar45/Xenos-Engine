@@ -41,6 +41,17 @@ namespace Xenos
 	{
 		m_Registry.destroy(entity);
 	}
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto camera = view.get<CameraComponent>(entity);
+			if (camera.Primary) return Entity(entity, this);
+		}
+
+		return {};
+	}
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		m_ViewportWidth = width;
@@ -55,7 +66,7 @@ namespace Xenos
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
 	}
-    void Scene::OnUpdate(TimeStep timeStep)
+    void Scene::OnUpdateRuntime(TimeStep timeStep)
     {
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
@@ -104,4 +115,19 @@ namespace Xenos
 			Renderer2D::EndScene();
 		}
     }
+	void Scene::OnUpdateEditor(TimeStep timeStep, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+		}
+
+		Renderer2D::EndScene();
+	}
+
 }
