@@ -1,0 +1,2 @@
+D:\Dev\Xenos\bin\Debug-windows-x86_64\XenosEngine\XenosEngine.pdb
+D:\Dev\Xenos\bin-int\Debug-windows-x86_64\XenosEngine\XenosEngine.pdb
